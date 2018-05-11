@@ -1,2 +1,2 @@
 # Popular Movies
-This is an Android appte a
+This is an Android app
