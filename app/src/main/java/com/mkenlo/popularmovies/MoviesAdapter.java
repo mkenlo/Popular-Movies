@@ -1,5 +1,6 @@
 package com.mkenlo.popularmovies;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.mkenlo.popularmovies.model.Movies;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -14,12 +16,13 @@ import java.util.ArrayList;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>  {
 
 
-    ArrayList<String> moviesList;
+    ArrayList<Movies> moviesList;
 
     public MoviesAdapter() {
+        moviesList = new ArrayList<>();
 
     }
-    public void setMoviesList(ArrayList<String> list){
+    public void setMoviesList(ArrayList<Movies> list){
         moviesList = list;
     }
 
@@ -32,11 +35,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MoviesAdapter.ViewHolder holder, int position) {
-        //Movies movie = moviesList.get(position);
+        Movies movie = moviesList.get(position);
 
-        String img =  moviesList.get(position);
+        //String movie =  moviesList.get(position);
         Picasso.get()
-                .load(img)
+                .load(movie.getPoster())
                 .into(holder.mImageMovie);
     }
 
