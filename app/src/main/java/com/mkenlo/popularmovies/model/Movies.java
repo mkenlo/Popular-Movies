@@ -1,6 +1,8 @@
 package com.mkenlo.popularmovies.model;
 
-public class Movies {
+import java.io.Serializable;
+
+public class Movies implements Serializable{
 
     private String mTitle;
     private String mStoryline;

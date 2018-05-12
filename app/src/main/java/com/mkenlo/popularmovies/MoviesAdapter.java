@@ -1,12 +1,14 @@
 package com.mkenlo.popularmovies;
 
-import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mkenlo.popularmovies.model.Movies;
 import com.squareup.picasso.Picasso;
@@ -17,6 +19,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
 
     ArrayList<Movies> moviesList;
+
 
     public MoviesAdapter() {
         moviesList = new ArrayList<>();
@@ -35,12 +38,22 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MoviesAdapter.ViewHolder holder, int position) {
-        Movies movie = moviesList.get(position);
+        final Movies movie = moviesList.get(position);
 
-        //String movie =  moviesList.get(position);
         Picasso.get()
                 .load(movie.getPoster())
-                .into(holder.mImageMovie);
+                .into(holder.movieImage);
+
+        holder.movieImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent detailActivity = new Intent(v.getContext(), MovieDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movie", movie);
+                detailActivity.putExtras(bundle);
+                v.getContext().startActivity(detailActivity);
+            }
+        });
     }
 
     @Override
@@ -51,12 +64,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mImageMovie;
+        ImageView movieImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mImageMovie = itemView.findViewById(R.id.iv_movie);
+            movieImage = itemView.findViewById(R.id.iv_movie_poster);
         }
     }
 }

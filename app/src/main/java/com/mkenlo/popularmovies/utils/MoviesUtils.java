@@ -22,12 +22,11 @@ import java.util.ArrayList;
 public class MoviesUtils {
 
 
-    private static String API_BASEURL = "https://api.themoviedb.org/3/discover/";
-    private static String API_KEY = "64a3190eb83b3b72783d41a185754482";
+    private static final String API_BASEURL = "https://api.themoviedb.org/3/discover/";
+    private static final String API_KEY = "64a3190eb83b3b72783d41a185754482";
+    private static final String API_IMG_BASEURL = "https://image.tmdb.org/t/p/w500";
     private String[] discover_type = {"movie", "tv"};
 
-    //https://api.themoviedb.org/3/discover/movie?api_key=64a3190eb83b3b72783d41a185754482
-    // &language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1
 
     public static String fetchMoviesRequest(){
 
@@ -78,15 +77,16 @@ public class MoviesUtils {
     }
 
     public static ArrayList<Movies> parseJsonMovie(String json){
-        Movies movie = new Movies();
+
         ArrayList<Movies> list =  new ArrayList<>();
         try{
             JSONObject jsonMovies = new JSONObject(json);
             JSONArray res = jsonMovies.getJSONArray("results");
             for(int i= 0; i< res.length();i++){
+                Movies movie = new Movies();
                 JSONObject  film = res.getJSONObject(i);
                 movie.setTitle(film.optString("original_title"));
-                movie.setPoster(film.optString("poster_path"));
+                movie.setPoster(API_IMG_BASEURL.concat(film.optString("poster_path")));
                 movie.setId(film.optInt("id"));
                 movie.setRating(film.getInt("vote_average"));
                 movie.setStoryline(film.optString("overview"));

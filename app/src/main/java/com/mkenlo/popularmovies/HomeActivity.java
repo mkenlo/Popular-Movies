@@ -49,10 +49,6 @@ public class HomeActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        String[] images = getResources().getStringArray(R.array.placeholder_movies);
-        moviesList = new ArrayList<String>(Arrays.asList(images));
-
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = findViewById(R.id.container);
         mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
@@ -96,7 +92,7 @@ public class HomeActivity extends AppCompatActivity{
 
         @Override
         public Fragment getItem(int position) {
-            return PagerFragment.newInstance(position + 1, moviesList);
+            return PagerFragment.newInstance(position + 1);
         }
 
         @Override
