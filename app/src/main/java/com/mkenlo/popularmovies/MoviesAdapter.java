@@ -47,7 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         holder.movieImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent detailActivity = new Intent(v.getContext(), MovieDetailActivity.class);
+                Intent detailActivity = new Intent(v.getContext(), DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);
                 detailActivity.putExtras(bundle);

@@ -88,7 +88,7 @@ public class MoviesUtils {
                 movie.setTitle(film.optString("original_title"));
                 movie.setPoster(API_IMG_BASEURL.concat(film.optString("poster_path")));
                 movie.setId(film.optInt("id"));
-                movie.setRating(film.getInt("vote_average"));
+                movie.setRating(film.getString("vote_average"));
                 movie.setStoryline(film.optString("overview"));
                 list.add(movie);
             }

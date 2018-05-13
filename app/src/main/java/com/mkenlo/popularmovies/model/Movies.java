@@ -8,7 +8,7 @@ public class Movies implements Serializable{
     private String mStoryline;
     private String mPoster;
     private String mTrailer;
-    private int mRating;
+    private String mRating;
     private String mGenre;
     private String[] mCast;
     private String mOriginal_lang;
@@ -54,11 +54,11 @@ public class Movies implements Serializable{
         this.mTrailer = mTrailer;
     }
 
-    public int getRating() {
+    public String getRating() {
         return mRating;
     }
 
-    public void setRating(int mRating) {
+    public void setRating(String mRating) {
         this.mRating = mRating;
     }
 
