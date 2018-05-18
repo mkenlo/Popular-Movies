@@ -1,8 +1,11 @@
 package com.mkenlo.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Movies implements Serializable{
+public class Movies implements Parcelable {
 
     private String mTitle;
     private String mStoryline;
@@ -16,10 +19,6 @@ public class Movies implements Serializable{
     private int id;
 
     public Movies() {
-    }
-
-    public Movies(String mTitle) {
-        this.mTitle = mTitle;
     }
 
     public String getTitle() {
@@ -101,4 +100,40 @@ public class Movies implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+
+    public Movies(Parcel in){
+        this.id = in.readInt();
+        this.mTitle = in.readString();
+        this.mPoster = in.readString();
+        this.mStoryline = in.readString();
+        this.mRating = in.readString();
+        this.mReleased_date = in.readString();
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(mTitle);
+        dest.writeString(mPoster);
+        dest.writeString(mStoryline);
+        dest.writeString(mRating);
+        dest.writeString(mReleased_date);
+    }
+
+    public static final Parcelable.Creator CREATOR
+            = new Parcelable.Creator() {
+        public Movies createFromParcel(Parcel in) {
+            return new Movies(in);
+        }
+
+        public Movies[] newArray(int size) {
+            return new Movies[size];
+        }
+    };
 }

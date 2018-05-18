@@ -32,14 +32,16 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
-        Movies movie = (Movies) getIntent().getSerializableExtra("movie");
+        Movies movie = (Movies) getIntent().getParcelableExtra("movie");
         ImageView iv_movie_poster = findViewById(R.id.iv_movie_poster);
         TextView tv_movie_rating = findViewById(R.id.tv_movie_rating);
+        TextView tv_movie_released = findViewById(R.id.tv_movie_date_released);
         TextView tv_movie_title = findViewById(R.id.tv_movie_title);
         TextView tv_movie_storyline = findViewById(R.id.tv_movie_storyline);
 
         Picasso.get().load(movie.getPoster()).into(iv_movie_poster);
         tv_movie_rating.setText(String.valueOf(movie.getRating()).concat("/10"));
+        tv_movie_released.setText(movie.getReleased_date());
         tv_movie_title.setText(movie.getTitle());
         tv_movie_storyline.setText(movie.getStoryline());
 

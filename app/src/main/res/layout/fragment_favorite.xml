@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FavoriteFragment">
+    android:orientation="vertical"
+    tools:context=".fragment.FavoriteFragment"
+    android:padding="@dimen/activity_horizontal_margin">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tv_home_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/favorite_fragment_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@color/colorAccent" />
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:background="@color/colorPrimary" />
+</LinearLayout>

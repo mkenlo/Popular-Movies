@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -22,13 +23,44 @@ import java.util.ArrayList;
 public class MoviesUtils {
 
 
-    private static final String API_BASEURL = "https://api.themoviedb.org/3/discover/";
+    private static final String API_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     private static final String API_KEY = "64a3190eb83b3b72783d41a185754482";
-    private static final String API_IMG_BASEURL = "https://image.tmdb.org/t/p/w500";
-    private String[] discover_type = {"movie", "tv"};
+    private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
+    private URL requestURL;
 
-    public static String fetchMoviesRequest(){
+    public MoviesUtils(Boolean params) {
+
+        setRequestURL(params);
+
+    }
+
+    public void setRequestURL(Boolean params) {
+
+        try{
+            Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();
+            built.appendQueryParameter("api_key", API_KEY);
+            built.appendQueryParameter("language", "en-US");
+            built.appendQueryParameter("sort_by", sortPreference(params));
+            built.appendQueryParameter("include_adult", "false");
+            built.appendQueryParameter("page", "1");
+            Uri builtUri = built.build();
+
+            this.requestURL = new URL(builtUri.toString());
+        }
+        catch(MalformedURLException ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    private String sortPreference(Boolean sortPreference){
+        if(sortPreference)
+            return "popularity.desc";
+        return "vote_average.desc";
+    }
+
+    public String fetchMoviesRequest(){
 
         String jsonResponse = "";
 
@@ -36,17 +68,7 @@ public class MoviesUtils {
 
         try {
 
-            Uri.Builder built = Uri.parse(API_BASEURL).buildUpon();
-            built.appendPath("movie");
-            built.appendQueryParameter("api_key", API_KEY);
-            built.appendQueryParameter("language", "en-US");
-            built.appendQueryParameter("sort_by", "popularity.desc");
-            built.appendQueryParameter("include_adult", "false");
-            built.appendQueryParameter("page", "1");
-            Uri builtUri = built.build();
-
-            URL url = new URL(builtUri.toString());
-            request = (HttpURLConnection) url.openConnection();
+            request = (HttpURLConnection) requestURL.openConnection();
             request.setRequestMethod("GET");
             InputStream in = new BufferedInputStream(request.getInputStream());
             InputStreamReader inputStreamReader = new InputStreamReader(in, Charset.forName("UTF-8"));
@@ -76,7 +98,7 @@ public class MoviesUtils {
 
     }
 
-    public static ArrayList<Movies> parseJsonMovie(String json){
+    public ArrayList<Movies> parseJsonMovie(String json){
 
         ArrayList<Movies> list =  new ArrayList<>();
         try{
@@ -86,10 +108,11 @@ public class MoviesUtils {
                 Movies movie = new Movies();
                 JSONObject  film = res.getJSONObject(i);
                 movie.setTitle(film.optString("original_title"));
-                movie.setPoster(API_IMG_BASEURL.concat(film.optString("poster_path")));
+                movie.setPoster(API_IMG_BASE_URL.concat(film.optString("poster_path")));
                 movie.setId(film.optInt("id"));
                 movie.setRating(film.getString("vote_average"));
                 movie.setStoryline(film.optString("overview"));
+                movie.setReleased_date(film.optString("release_date"));
                 list.add(movie);
             }
         }
@@ -99,5 +122,7 @@ public class MoviesUtils {
 
         return list;
     }
+
+
 
 }

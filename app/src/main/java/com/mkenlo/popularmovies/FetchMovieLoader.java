@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 public class FetchMovieLoader extends AsyncTaskLoader<ArrayList<Movies>> {
 
-    public FetchMovieLoader(Context context) {
+    Boolean sortBy;
+    public FetchMovieLoader(Context context, Boolean sortBy) {
         super(context);
+        this.sortBy = sortBy;
     }
 
     @Override
@@ -22,9 +24,9 @@ public class FetchMovieLoader extends AsyncTaskLoader<ArrayList<Movies>> {
 
     @Override
     public ArrayList<Movies> loadInBackground() {
-
-        String json = MoviesUtils.fetchMoviesRequest();
-        return MoviesUtils.parseJsonMovie(json);
+        MoviesUtils utils = new MoviesUtils(sortBy);
+        String json = utils.fetchMoviesRequest();
+        return utils.parseJsonMovie(json);
     }
 
     @Override

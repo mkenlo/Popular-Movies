@@ -1,7 +1,9 @@
 package com.mkenlo.popularmovies.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,21 +14,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mkenlo.popularmovies.FetchMovieLoader;
 import com.mkenlo.popularmovies.MoviesAdapter;
 import com.mkenlo.popularmovies.R;
+import com.mkenlo.popularmovies.SettingsActivity;
 import com.mkenlo.popularmovies.model.Movies;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Movies>> {
 
     private RecyclerView mRvMovieList;
     private MoviesAdapter mAdapter;
+    private TextView fragment_headline;
+    private static final String KEY_SORT_MOVIE_BY = "switch_pref_sorting";
+    Boolean sortPreference;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,26 +45,28 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        GridLayoutManager glManager = new GridLayoutManager(getContext(), 3);
 
-
-        GridLayoutManager glManager = new GridLayoutManager(getContext(), 2);
+        fragment_headline = rootView.findViewById(R.id.tv_home_title);
 
         mRvMovieList = rootView.findViewById(R.id.rv_movies_list);
         mRvMovieList.setLayoutManager(glManager);
-
+        mRvMovieList.setHasFixedSize(true);
         mAdapter = new MoviesAdapter();
-
+        mAdapter.setMoviesList(new ArrayList<Movies>());
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(getContext());
+        sortPreference = sharedPref.getBoolean(KEY_SORT_MOVIE_BY, true);
         getLoaderManager().initLoader(0, null, this).forceLoad();
         mRvMovieList.setAdapter(mAdapter);
         return rootView;
     }
 
 
-
     @NonNull
     @Override
     public Loader<ArrayList<Movies>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new FetchMovieLoader(getActivity());
+        return new FetchMovieLoader(getActivity(), sortPreference);
     }
 
     @Override
@@ -68,11 +74,19 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         mAdapter.setMoviesList(data);
         mAdapter.notifyDataSetChanged();
         mRvMovieList.setAdapter(mAdapter);
+        updateUIHeadline(sortPreference);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<ArrayList<Movies>> loader) {
 
+    }
+
+    private void updateUIHeadline(Boolean sortPref){
+        if(sortPref)
+            fragment_headline.setText(R.string.home_fragment_title);
+        else
+            fragment_headline.setText(R.string.home_fragment_title_2);
     }
 
 }

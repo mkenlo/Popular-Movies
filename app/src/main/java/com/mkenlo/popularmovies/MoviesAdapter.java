@@ -49,7 +49,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
             public void onClick(View v) {
                 Intent detailActivity = new Intent(v.getContext(), DetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("movie", movie);
+                bundle.putParcelable("movie", movie);
                 detailActivity.putExtras(bundle);
                 v.getContext().startActivity(detailActivity);
             }
