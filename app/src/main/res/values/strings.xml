@@ -18,7 +18,7 @@
 
 
     </string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Popular Movies</string>
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorites</string>
     <string name="title_search">Library</string>
@@ -28,12 +28,15 @@
 
     <string name="home_fragment_title">Most Popular Movies</string>
     <string name="home_fragment_title_2">Top Rated Movies</string>
-
     <string name="favorite_fragment_title">My List</string>
 
     <string name="pref_sort_by">Sort Movies By</string>
     <string name="pref_sort_summary">Sort Movies by their Popularity or Rating</string>
     <string name="pref_sort_on">You enable sorting by Popularity</string>
     <string name="pref_sort_off">You enable sorting by Rating</string>
+
+    <string name="image_contentDescription">Movie Poster image</string>
+    <string name="tv_movie_storyline">Storyline</string>
+    <string name="bt_movie_trailer">Watch Trailer</string>
 
 </resources>

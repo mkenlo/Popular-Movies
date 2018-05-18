@@ -1,7 +1,6 @@
 package com.mkenlo.popularmovies.utils;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.mkenlo.popularmovies.model.Movies;
 
@@ -24,8 +23,8 @@ public class MoviesUtils {
 
 
     private static final String API_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
-    private static final String API_KEY = "64a3190eb83b3b72783d41a185754482";
-    private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
 
     private URL requestURL;
 
@@ -35,7 +34,7 @@ public class MoviesUtils {
 
     }
 
-    public void setRequestURL(Boolean params) {
+    private void setRequestURL(Boolean params) {
 
         try{
             Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();

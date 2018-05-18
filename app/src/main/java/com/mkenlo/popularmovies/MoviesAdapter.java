@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mkenlo.popularmovies.model.Movies;
 import com.squareup.picasso.Picasso;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>  {
 
 
-    ArrayList<Movies> moviesList;
+    private ArrayList<Movies> moviesList;
 
 
     public MoviesAdapter() {
@@ -64,9 +63,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView movieImage;
+        final ImageView movieImage;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             movieImage = itemView.findViewById(R.id.iv_movie_poster);

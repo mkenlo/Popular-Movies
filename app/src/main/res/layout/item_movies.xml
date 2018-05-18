@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/iv_movie_poster"
-    android:scaleType="centerInside"
-    android:layout_gravity="fill">
+    android:scaleType="fitCenter"
+    android:contentDescription="@string/image_contentDescription"
+    android:layout_margin="4dp">
 
 </ImageView>

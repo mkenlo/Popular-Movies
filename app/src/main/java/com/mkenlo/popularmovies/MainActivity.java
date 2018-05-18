@@ -13,15 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import com.mkenlo.popularmovies.fragment.FavoriteFragment;
 import com.mkenlo.popularmovies.fragment.HomeFragment;
 import com.mkenlo.popularmovies.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (!isDeviceConnectedToInternet()) {
@@ -50,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
             View view = snackbar.getView();
             view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             snackbar.show();
+            FrameLayout fl = findViewById(R.id.frame_error_container);
+            fl.setVisibility(View.VISIBLE);
+        }else{
+            FrameLayout fl = findViewById(R.id.frame_error_container);
+            fl.setVisibility(View.GONE);
         }
 
         Fragment frag = HomeFragment.newInstance();
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public Fragment selectFragment(MenuItem item) {
+    private Fragment selectFragment(MenuItem item) {
 
         Fragment frag = null;
         switch (item.getItemId()) {
@@ -75,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public boolean isDeviceConnectedToInternet() {
+    private boolean isDeviceConnectedToInternet() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return (cm.getActiveNetworkInfo() != null) ? true : false;
+        return cm.getActiveNetworkInfo() != null;
     }
 
 

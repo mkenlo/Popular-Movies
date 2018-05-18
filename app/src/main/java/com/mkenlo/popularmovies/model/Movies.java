@@ -3,7 +3,6 @@ package com.mkenlo.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 
 public class Movies implements Parcelable {
 
@@ -101,7 +100,7 @@ public class Movies implements Parcelable {
         this.id = id;
     }
 
-    public Movies(Parcel in){
+    private Movies(Parcel in){
         this.id = in.readInt();
         this.mTitle = in.readString();
         this.mPoster = in.readString();

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mkenlo.popularmovies.model.Movies;
@@ -19,10 +18,10 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
-        Movies movie = (Movies) getIntent().getParcelableExtra("movie");
+        Movies movie = getIntent().getParcelableExtra("movie");
         ImageView iv_movie_poster = findViewById(R.id.iv_movie_poster);
         TextView tv_movie_rating = findViewById(R.id.tv_movie_rating);
         TextView tv_movie_released = findViewById(R.id.tv_movie_date_released);

@@ -12,6 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/frame_error_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No internet connection"/>
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

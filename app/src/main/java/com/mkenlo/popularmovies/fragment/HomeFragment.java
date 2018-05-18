@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.mkenlo.popularmovies.FetchMovieLoader;
 import com.mkenlo.popularmovies.MoviesAdapter;
 import com.mkenlo.popularmovies.R;
-import com.mkenlo.popularmovies.SettingsActivity;
 import com.mkenlo.popularmovies.model.Movies;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private MoviesAdapter mAdapter;
     private TextView fragment_headline;
     private static final String KEY_SORT_MOVIE_BY = "switch_pref_sorting";
-    Boolean sortPreference;
+    private Boolean sortPreference;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,14 +40,15 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         GridLayoutManager glManager = new GridLayoutManager(getContext(), 3);
 
-        fragment_headline = rootView.findViewById(R.id.tv_home_title);
 
+        fragment_headline = rootView.findViewById(R.id.tv_home_title);
+        fragment_headline.setText(R.string.home_fragment_title);
         mRvMovieList = rootView.findViewById(R.id.rv_movies_list);
         mRvMovieList.setLayoutManager(glManager);
         mRvMovieList.setHasFixedSize(true);
