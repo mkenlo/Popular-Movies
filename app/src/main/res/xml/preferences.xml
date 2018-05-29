@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="switch_pref_sorting"
-        android:summary="@string/pref_sort_summary"
-        android:summaryOff="@string/pref_sort_off"
-        android:summaryOn="@string/pref_sort_on"
+
+    <ListPreference
+        android:defaultValue="@string/pref_default_sorting"
+        android:entries="@array/pref_sort_by_entries"
+        android:entryValues="@array/pref_sort_by_values"
+        android:key="list_sorting"
         android:title="@string/pref_sort_by" />
+
 
 </PreferenceScreen>

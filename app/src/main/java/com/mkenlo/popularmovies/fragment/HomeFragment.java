@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private RecyclerView mRvMovieList;
     private MoviesAdapter mAdapter;
     private TextView fragment_headline;
-    private static final String KEY_SORT_MOVIE_BY = "switch_pref_sorting";
-    private Boolean sortPreference;
+    private static final String KEY_SORT_MOVIE_BY = "list_sorting";
+    private String sortPreference;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         mAdapter.setMoviesList(new ArrayList<Movies>());
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(getContext());
-        sortPreference = sharedPref.getBoolean(KEY_SORT_MOVIE_BY, true);
+        sortPreference = sharedPref.getString(KEY_SORT_MOVIE_BY, getResources().getString(R.string.pref_default_sorting));
         getLoaderManager().initLoader(0, null, this).forceLoad();
         mRvMovieList.setAdapter(mAdapter);
         return rootView;
@@ -82,8 +83,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    private void updateUIHeadline(Boolean sortPref){
-        if(sortPref)
+    private void updateUIHeadline(String sortPref){
+        if(sortPref.equalsIgnoreCase("1"))
             fragment_headline.setText(R.string.home_fragment_title);
         else
             fragment_headline.setText(R.string.home_fragment_title_2);

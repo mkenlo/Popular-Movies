@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class FetchMovieLoader extends AsyncTaskLoader<ArrayList<Movies>> {
 
-    private final Boolean sortBy;
-    public FetchMovieLoader(Context context, Boolean sortBy) {
+    private final String sortBy;
+    public FetchMovieLoader(Context context, String sortBy) {
         super(context);
         this.sortBy = sortBy;
     }

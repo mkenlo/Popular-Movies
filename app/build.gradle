@@ -15,6 +15,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "TMdbApiKey", PopularMoviesApp_ApiKey
+            resValue 'string', "tmdb_api_key", PopularMoviesApp_ApiKey
+        }
+        debug{
+            buildConfigField 'String', "TMdbApiKey",PopularMoviesApp_ApiKey
+            resValue 'string', "tmdb_api_key", PopularMoviesApp_ApiKey
         }
     }
 }

@@ -2,6 +2,7 @@ package com.mkenlo.popularmovies.utils;
 
 import android.net.Uri;
 
+import com.mkenlo.popularmovies.BuildConfig;
 import com.mkenlo.popularmovies.model.Movies;
 
 import org.json.JSONArray;
@@ -22,26 +23,27 @@ import java.util.ArrayList;
 public class MoviesUtils {
 
 
-    private static final String API_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
-    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_BASE_URL = "https://api.themoviedb.org/3/movie";
+    private static String API_KEY = "DUMMY API KEY. PLEASE CHANGE ME"; // Add your API KEY here
     private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
+    private String[] sortPreference = {"popular", "top_rated"};
 
     private URL requestURL;
 
-    public MoviesUtils(Boolean params) {
+    public MoviesUtils(String params) {
 
+        setApiKey();
         setRequestURL(params);
 
     }
 
-    private void setRequestURL(Boolean params) {
+    private void setRequestURL(String params) {
 
         try{
             Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();
+            built.appendPath(sortPreference[Integer.valueOf(params)-1]);
             built.appendQueryParameter("api_key", API_KEY);
             built.appendQueryParameter("language", "en-US");
-            built.appendQueryParameter("sort_by", sortPreference(params));
-            built.appendQueryParameter("include_adult", "false");
             built.appendQueryParameter("page", "1");
             Uri builtUri = built.build();
 
@@ -51,12 +53,6 @@ public class MoviesUtils {
             ex.printStackTrace();
         }
 
-    }
-
-    private String sortPreference(Boolean sortPreference){
-        if(sortPreference)
-            return "popularity.desc";
-        return "vote_average.desc";
     }
 
     public String fetchMoviesRequest(){
@@ -122,6 +118,9 @@ public class MoviesUtils {
         return list;
     }
 
-
-
+    public static void setApiKey() {
+        if (API_KEY.equalsIgnoreCase("DUMMY API KEY. PLEASE CHANGE ME")) {
+            API_KEY = BuildConfig.TMdbApiKey;
+        }
+    }
 }

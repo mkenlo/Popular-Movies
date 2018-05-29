@@ -31,9 +31,15 @@
     <string name="favorite_fragment_title">My List</string>
 
     <string name="pref_sort_by">Sort Movies By</string>
-    <string name="pref_sort_summary">Sort Movies by their Popularity or Rating</string>
-    <string name="pref_sort_on">You enable sorting by Popularity</string>
-    <string name="pref_sort_off">You enable sorting by Rating</string>
+    <string name="pref_default_sorting">1</string>
+    <string-array name="pref_sort_by_entries">
+        <item>Popular Movies</item>
+        <item>Top Rated Movies</item>
+    </string-array>
+    <string-array name="pref_sort_by_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 
     <string name="image_contentDescription">Movie Poster image</string>
     <string name="tv_movie_storyline">Storyline</string>
