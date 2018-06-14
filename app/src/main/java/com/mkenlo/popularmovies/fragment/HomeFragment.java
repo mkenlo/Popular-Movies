@@ -11,20 +11,23 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mkenlo.popularmovies.FetchMovieLoader;
+import com.mkenlo.popularmovies.tasks.FetchMovieTask;
 import com.mkenlo.popularmovies.MoviesAdapter;
 import com.mkenlo.popularmovies.R;
 import com.mkenlo.popularmovies.model.Movies;
+import com.mkenlo.popularmovies.utils.Objectify;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Movies>> {
+public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
 
     private RecyclerView mRvMovieList;
     private MoviesAdapter mAdapter;
@@ -66,20 +69,27 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @NonNull
     @Override
-    public Loader<ArrayList<Movies>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new FetchMovieLoader(getActivity(), sortPreference);
+    public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
+        try {
+            JSONObject params = new JSONObject(String.format("{'sort_by':%s}", sortPreference));
+            return new FetchMovieTask(getActivity(), params);
+
+        }catch(JSONException ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<ArrayList<Movies>> loader, ArrayList<Movies> data) {
-        mAdapter.setMoviesList(data);
+    public void onLoadFinished(@NonNull Loader<String> loader, String data) {
+        mAdapter.setMoviesList(Objectify.getMovies(data));
         mAdapter.notifyDataSetChanged();
         mRvMovieList.setAdapter(mAdapter);
         updateUIHeadline(sortPreference);
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<ArrayList<Movies>> loader) {
+    public void onLoaderReset(@NonNull Loader<String> loader) {
 
     }
 

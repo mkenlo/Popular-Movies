@@ -44,5 +44,13 @@
     <string name="image_contentDescription">Movie Poster image</string>
     <string name="tv_movie_storyline">Storyline</string>
     <string name="bt_movie_trailer">Watch Trailer</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

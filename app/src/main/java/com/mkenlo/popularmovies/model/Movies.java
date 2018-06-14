@@ -1,18 +1,18 @@
 package com.mkenlo.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 
+@Entity(tableName = "movies")
 public class Movies implements Parcelable {
 
     private String mTitle;
     private String mStoryline;
     private String mPoster;
-    private String mTrailer;
     private String mRating;
     private String mGenre;
-    private String[] mCast;
     private String mOriginal_lang;
     private String mReleased_date;
     private int id;
@@ -44,14 +44,6 @@ public class Movies implements Parcelable {
         this.mPoster = mPoster;
     }
 
-    public String getTrailer() {
-        return mTrailer;
-    }
-
-    public void setTrailer(String mTrailer) {
-        this.mTrailer = mTrailer;
-    }
-
     public String getRating() {
         return mRating;
     }
@@ -66,14 +58,6 @@ public class Movies implements Parcelable {
 
     public void setGenre(String mGenre) {
         this.mGenre = mGenre;
-    }
-
-    public String[] getCast() {
-        return mCast;
-    }
-
-    public void setCast(String[] mCast) {
-        this.mCast = mCast;
     }
 
     public String getOriginal_lang() {

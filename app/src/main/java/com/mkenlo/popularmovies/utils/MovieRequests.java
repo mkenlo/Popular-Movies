@@ -1,6 +1,7 @@
 package com.mkenlo.popularmovies.utils;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.mkenlo.popularmovies.BuildConfig;
 import com.mkenlo.popularmovies.model.Movies;
@@ -20,7 +21,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class MoviesUtils {
+public class MovieRequests{
 
 
     private static final String API_BASE_URL = "https://api.themoviedb.org/3/movie";
@@ -28,34 +29,43 @@ public class MoviesUtils {
     private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
     private String[] sortPreference = {"popular", "top_rated"};
 
+
     private URL requestURL;
 
-    public MoviesUtils(String params) {
+
+    public MovieRequests(JSONObject params) {
 
         setApiKey();
         setRequestURL(params);
 
     }
 
-    private void setRequestURL(String params) {
+    private void setRequestURL(JSONObject params) {
 
         try{
+            Log.d("PARAMETERS INFO", params.toString());
             Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();
-            built.appendPath(sortPreference[Integer.valueOf(params)-1]);
             built.appendQueryParameter("api_key", API_KEY);
-            built.appendQueryParameter("language", "en-US");
-            built.appendQueryParameter("page", "1");
+
+            if(params.has("sort_by")){
+                built.appendPath(sortPreference[Integer.valueOf(params.getInt("sort_by"))-1]);
+            }
+            if(params.has("movie_id")){
+                built.appendEncodedPath(params.getString("movie_id"));
+                built.appendQueryParameter("append_to_response", "videos,reviews");
+            }
             Uri builtUri = built.build();
 
             this.requestURL = new URL(builtUri.toString());
         }
-        catch(MalformedURLException ex){
+        catch(Exception ex){
             ex.printStackTrace();
         }
 
     }
 
-    public String fetchMoviesRequest(){
+
+    public String fetch(){
 
         String jsonResponse = "";
 
