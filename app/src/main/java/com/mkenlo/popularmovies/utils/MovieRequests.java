@@ -43,7 +43,7 @@ public class MovieRequests{
     private void setRequestURL(JSONObject params) {
 
         try{
-            Log.d("PARAMETERS INFO", params.toString());
+
             Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();
             built.appendQueryParameter("api_key", API_KEY);
 
@@ -52,11 +52,15 @@ public class MovieRequests{
             }
             if(params.has("movie_id")){
                 built.appendEncodedPath(params.getString("movie_id"));
-                built.appendQueryParameter("append_to_response", "videos,reviews");
+                // detail key can be "videos" or "reviews"
+                if (params.has("details"))
+                    built.appendEncodedPath(params.getString("details"));
+               // built.appendQueryParameter("append_to_response", "videos,reviews");
             }
             Uri builtUri = built.build();
 
             this.requestURL = new URL(builtUri.toString());
+            Log.d("DETAIL URL", builtUri.toString());
         }
         catch(Exception ex){
             ex.printStackTrace();

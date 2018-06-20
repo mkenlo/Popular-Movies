@@ -3,7 +3,7 @@ package com.mkenlo.popularmovies.model;
 public class MovieTrailer {
 
     String name;
-    String movieId;
+    int movieId;
     String youtubeKey;
 
 
@@ -18,11 +18,11 @@ public class MovieTrailer {
         this.name = name;
     }
 
-    public String getMovieId() {
+    public int getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(String movieId) {
+    public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
 

@@ -45,12 +45,16 @@
     <string name="tv_movie_storyline">Storyline</string>
     <string name="bt_movie_trailer">Watch Trailer</string>
     <string name="title_activity_details">DetailsActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="tab_text_1">About</string>
+    <string name="tab_text_2">Reviews</string>
+    <string name="tab_text_3">Trailer</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="large_text_2">"Don’t call me Lord Snow. The dwarf lifted an eyebrow. Would you rather be called the Imp?"
+"Let them see that their words can cut you and you’ll never be free of the mockery."
+"If they want to give you a name take it make it your own. Then they can’t hurt you with it anymore."
+    </string>
 </resources>

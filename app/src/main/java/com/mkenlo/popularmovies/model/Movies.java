@@ -4,6 +4,9 @@ import android.arch.persistence.room.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity(tableName = "movies")
 public class Movies implements Parcelable {
@@ -12,12 +15,14 @@ public class Movies implements Parcelable {
     private String mStoryline;
     private String mPoster;
     private String mRating;
-    private String mGenre;
+    private ArrayList<String> mGenre;
     private String mOriginal_lang;
     private String mReleased_date;
+    private String mBackdrop_poster;
     private int id;
 
     public Movies() {
+        mGenre = new ArrayList<String>();
     }
 
     public String getTitle() {
@@ -52,12 +57,12 @@ public class Movies implements Parcelable {
         this.mRating = mRating;
     }
 
-    public String getGenre() {
+    public ArrayList<String> getGenre() {
         return mGenre;
     }
 
-    public void setGenre(String mGenre) {
-        this.mGenre = mGenre;
+    public void setGenre(String genre) {
+        this.mGenre.add(genre);
     }
 
     public String getOriginal_lang() {
@@ -84,10 +89,19 @@ public class Movies implements Parcelable {
         this.id = id;
     }
 
+    public String getBackdropPoster() {
+        return mBackdrop_poster;
+    }
+
+    public void setBackdropPoster(String mBackdrop_poster) {
+        this.mBackdrop_poster = mBackdrop_poster;
+    }
+
     private Movies(Parcel in){
         this.id = in.readInt();
         this.mTitle = in.readString();
         this.mPoster = in.readString();
+        this.mBackdrop_poster = in.readString();
         this.mStoryline = in.readString();
         this.mRating = in.readString();
         this.mReleased_date = in.readString();
@@ -104,6 +118,7 @@ public class Movies implements Parcelable {
         dest.writeInt(id);
         dest.writeString(mTitle);
         dest.writeString(mPoster);
+        dest.writeString(mBackdrop_poster);
         dest.writeString(mStoryline);
         dest.writeString(mRating);
         dest.writeString(mReleased_date);
