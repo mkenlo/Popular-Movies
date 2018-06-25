@@ -1,14 +1,13 @@
 package com.mkenlo.popularmovies.fragment;
 
 
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,9 @@ import org.json.JSONObject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AboutMovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+public class AboutMovieFragment extends Fragment {
 
-    private static final String ARG_MOVIE_ID = "movie id";
+    private static final String ARG_MOVIE = "movie";
     //private int movieId;
     private Movies movie;
     ImageView iv_movie_poster ;
@@ -45,10 +44,10 @@ public class AboutMovieFragment extends Fragment implements LoaderManager.Loader
     public AboutMovieFragment() {
         // Required empty public constructor
     }
-    public static AboutMovieFragment newInstance(int movieId) {
+    public static AboutMovieFragment newInstance(Movies movie) {
         AboutMovieFragment fragment = new AboutMovieFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_MOVIE_ID, movieId);
+        args.putParcelable(ARG_MOVIE, movie);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +57,7 @@ public class AboutMovieFragment extends Fragment implements LoaderManager.Loader
         super.onCreate(savedInstanceState);
         movie =  new Movies();
         if (getArguments() != null) {
-            movie.setId(getArguments().getInt(ARG_MOVIE_ID));
+            movie = getArguments().getParcelable(ARG_MOVIE);
         }
     }
 
@@ -69,9 +68,6 @@ public class AboutMovieFragment extends Fragment implements LoaderManager.Loader
 
         View rootView = inflater.inflate(R.layout.fragment_about_movie, container, false);
 
-        getLoaderManager().initLoader(1, null, this).forceLoad();
-
-
         iv_movie_poster = rootView.findViewById(R.id.iv_movie_poster);
         tv_movie_rating = rootView.findViewById(R.id.tv_movie_rating);
         tv_movie_released = rootView.findViewById(R.id.tv_movie_date_released);
@@ -81,33 +77,11 @@ public class AboutMovieFragment extends Fragment implements LoaderManager.Loader
 
         linearLayout = rootView.findViewById(R.id.ll_rating);
 
+        updateUI();
+
         return rootView;
     }
 
-
-    @NonNull
-    @Override
-    public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
-        try {
-            JSONObject params = new JSONObject(String.format("{'movie_id':%s}", movie.getId()));
-            return new FetchMovieTask(getActivity(), params);
-
-        }catch(JSONException ex){
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader<String> loader, String data) {
-        movie = Objectify.getOneMovie(data);
-        updateUI();
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<String> loader) {
-
-    }
 
     public void updateUI(){
 
@@ -116,20 +90,10 @@ public class AboutMovieFragment extends Fragment implements LoaderManager.Loader
         tv_movie_released.setText(movie.getReleased_date());
         tv_movie_title.setText(movie.getTitle());
         tv_movie_storyline.setText(movie.getStoryline());
+        tv_movie_genre.setText(movie.getGenre());
 
         linearLayout.removeAllViewsInLayout();
         populateRating(Double.valueOf(movie.getRating()));
-
-        StringBuilder genre = new StringBuilder();
-        for(int i=0; i<movie.getGenre().size();i++){
-            genre.append(movie.getGenre().get(i));
-            if(i<movie.getGenre().size()-1)
-                genre.append(" | ");
-        }
-
-        tv_movie_genre.setText(genre.toString());
-
-
     }
 
     public void populateRating(double rating){

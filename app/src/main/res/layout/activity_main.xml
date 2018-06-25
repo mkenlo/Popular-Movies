@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No internet connection"/>
+            android:text="@string/error_connection"/>
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView

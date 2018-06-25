@@ -1,7 +1,5 @@
 package com.mkenlo.popularmovies.utils;
 
-import android.graphics.Movie;
-
 import com.mkenlo.popularmovies.model.MovieReview;
 import com.mkenlo.popularmovies.model.MovieTrailer;
 import com.mkenlo.popularmovies.model.Movies;
@@ -22,7 +20,6 @@ public class Objectify {
 
     private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
     private static final String API_IMG_BASE_URL_LARGE = "https://image.tmdb.org/t/p/w500";
-    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v";
 
 
     public static ArrayList<Movies> getMovies(String json){
@@ -108,9 +105,15 @@ public class Objectify {
             movie.setReleased_date(film.optString("release_date"));
             JSONArray genre = film.getJSONArray("genres");
 
+            StringBuilder list = new StringBuilder();
             for(int i=0; i< genre.length();i++){
-                movie.setGenre(genre.getJSONObject(i).getString("name"));
+                list.append(genre.getJSONObject(i).getString("name"));
+                if(i<genre.length()-1)
+                    list.append(" | ");
             }
+
+            movie.setGenre(list.toString());
+
         }catch(JSONException ex){
             ex.printStackTrace();
         }

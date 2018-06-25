@@ -1,110 +1,105 @@
 package com.mkenlo.popularmovies.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-@Entity(tableName = "movies")
+@Entity(tableName = "favorite_movies")
 public class Movies implements Parcelable {
 
-    private String mTitle;
-    private String mStoryline;
-    private String mPoster;
-    private String mRating;
-    private ArrayList<String> mGenre;
-    private String mOriginal_lang;
-    private String mReleased_date;
-    private String mBackdrop_poster;
+    private String title;
+    private String storyline;
+    private String poster;
+    private String rating;
+    private String genre;
+    private String released_date;
+    private String backdrop_poster;
+    @PrimaryKey
     private int id;
 
-    public Movies() {
-        mGenre = new ArrayList<String>();
-    }
+    public Movies() { }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+        this.title = mTitle;
     }
 
     public String getStoryline() {
-        return mStoryline;
+        return storyline;
     }
 
-    public void setStoryline(String mStoryline) {
-        this.mStoryline = mStoryline;
+    public void setStoryline(String storyline) {
+        this.storyline = storyline;
     }
 
     public String getPoster() {
-        return mPoster;
+        return poster;
     }
 
-    public void setPoster(String mPoster) {
-        this.mPoster = mPoster;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public String getRating() {
-        return mRating;
+        return rating;
     }
 
-    public void setRating(String mRating) {
-        this.mRating = mRating;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
-    public ArrayList<String> getGenre() {
-        return mGenre;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setGenre(String genre) {
-        this.mGenre.add(genre);
-    }
-
-    public String getOriginal_lang() {
-        return mOriginal_lang;
-    }
-
-    public void setOriginal_lang(String mOriginal_lang) {
-        this.mOriginal_lang = mOriginal_lang;
-    }
+    public void setGenre(String genre) { this.genre = genre;  }
 
     public String getReleased_date() {
-        return mReleased_date;
+        return released_date;
     }
 
     public void setReleased_date(String mReleased_date) {
-        this.mReleased_date = mReleased_date;
+        this.released_date = mReleased_date;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBackdrop_poster(String backdrop_poster) {
+        this.backdrop_poster = backdrop_poster;
     }
 
+    public void setId(int id) { this.id = id;  }
+
     public String getBackdropPoster() {
-        return mBackdrop_poster;
+        return backdrop_poster;
     }
 
     public void setBackdropPoster(String mBackdrop_poster) {
-        this.mBackdrop_poster = mBackdrop_poster;
+        this.backdrop_poster = mBackdrop_poster;
+    }
+
+    public String getBackdrop_poster() {
+        return backdrop_poster;
     }
 
     private Movies(Parcel in){
         this.id = in.readInt();
-        this.mTitle = in.readString();
-        this.mPoster = in.readString();
-        this.mBackdrop_poster = in.readString();
-        this.mStoryline = in.readString();
-        this.mRating = in.readString();
-        this.mReleased_date = in.readString();
+        this.title = in.readString();
+        this.poster = in.readString();
+        this.backdrop_poster = in.readString();
+        this.storyline = in.readString();
+        this.rating = in.readString();
+        this.released_date = in.readString();
 
     }
 
@@ -116,12 +111,12 @@ public class Movies implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(mTitle);
-        dest.writeString(mPoster);
-        dest.writeString(mBackdrop_poster);
-        dest.writeString(mStoryline);
-        dest.writeString(mRating);
-        dest.writeString(mReleased_date);
+        dest.writeString(title);
+        dest.writeString(poster);
+        dest.writeString(backdrop_poster);
+        dest.writeString(storyline);
+        dest.writeString(rating);
+        dest.writeString(released_date);
     }
 
     public static final Parcelable.Creator CREATOR

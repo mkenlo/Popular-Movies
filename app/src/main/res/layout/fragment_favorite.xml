@@ -21,4 +21,11 @@
         android:layout_height="1dp"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:background="@color/colorPrimary" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_movies_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -2,6 +2,7 @@
     <string name="app_name">Popular Movies</string>
 
     <string name="action_settings">Settings</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -48,13 +49,13 @@
     <string name="tab_text_1">About</string>
     <string name="tab_text_2">Reviews</string>
     <string name="tab_text_3">Trailer</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorite_message">Added as your Favorite!</string>
+    <string name="error_connection">No internet connection</string>
 
-    <string name="large_text_2">"Don’t call me Lord Snow. The dwarf lifted an eyebrow. Would you rather be called the Imp?"
-"Let them see that their words can cut you and you’ll never be free of the mockery."
-"If they want to give you a name take it make it your own. Then they can’t hurt you with it anymore."
-    </string>
+    <string name="dummy_text">Hello World</string>
+    <string name="dummy_movie_title"> Lorem ipsus </string>
+    <string name="dummy_movie_date_released"> Jan 01, 1924 </string>
+    <string name="dummy_movie_rating"> 8.7 </string>
+    <string name="dummy_movie_genre">Action | Adventure | Fantansy | War | Science Fiction</string>
 </resources>

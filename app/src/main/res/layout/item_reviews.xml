@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
@@ -12,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_account_circle"
+        android:contentDescription="User Image Account"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="John Snow"
         android:textStyle="bold"
+        android:text="@string/dummy_text"
         app:layout_constraintLeft_toRightOf="@id/iv_review_author"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/colorSecondaryLight"/>
@@ -29,10 +29,8 @@
         android:id="@+id/tv_review_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/activity_horizontal_margin"
         android:ellipsize="start"
-        android:maxLines="5"
-        android:text="@string/large_text_2"
+        android:text="@string/large_text"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/tv_review_author"
         app:layout_constraintTop_toBottomOf="@id/tv_review_author" />

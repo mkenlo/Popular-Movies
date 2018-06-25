@@ -11,15 +11,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.mkenlo.popularmovies.db.MovieDB;
 import com.mkenlo.popularmovies.fragment.AboutMovieFragment;
 import com.mkenlo.popularmovies.fragment.ReviewMovieFragment;
 import com.mkenlo.popularmovies.fragment.TrailerMovieFragment;
@@ -31,8 +27,10 @@ public class DetailsActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private int totalPages = 3;
+    private static final String ARG_MOVIE = "movie";
 
     Movies movie;
+    MovieDB mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,57 +52,30 @@ public class DetailsActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "You just added this Movie as your Favorite", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
+        mDB = MovieDB.getInstance(this);
 
-        movie = getIntent().getParcelableExtra("movie");
+        movie = getIntent().getParcelableExtra(ARG_MOVIE);
+
+        // Rename UI title with the movie Title
         getSupportActionBar().setTitle(movie.getTitle());
 
         ImageView iv_movie_bg = findViewById(R.id.iv_movie_backdrop);
         Picasso.get().load(movie.getBackdropPoster()).into(iv_movie_bg);
-    }
 
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        FloatingActionButton fab = findViewById(R.id.fab);
 
-        public PlaceholderFragment() {
-        }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, R.string.favorite_message, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                onFavoriteFabPressed();
+            }
+        });
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
     }
 
     /**
@@ -122,7 +93,7 @@ public class DetailsActivity extends AppCompatActivity {
             Fragment frag = null;
             switch(position){
                 case 0:
-                    frag = AboutMovieFragment.newInstance(movie.getId());
+                    frag = AboutMovieFragment.newInstance(movie);
                     break;
                 case 1:
                     frag = ReviewMovieFragment.newInstance(movie.getId());
@@ -139,5 +110,18 @@ public class DetailsActivity extends AppCompatActivity {
         public int getCount() {
             return totalPages;
         }
+    }
+
+    public void onFavoriteFabPressed(){
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(mDB.movieDao().getOneMovie(movie.getId()) == null){
+                    mDB.movieDao().insert(movie);
+                }
+            }
+        });
+
     }
 }

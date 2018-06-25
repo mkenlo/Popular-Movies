@@ -21,15 +21,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class MovieRequests{
+public class MovieRequests {
 
 
     private static final String API_BASE_URL = "https://api.themoviedb.org/3/movie";
     private static String API_KEY = "DUMMY API KEY. PLEASE CHANGE ME"; // Add your API KEY here
-    private static final String API_IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
     private String[] sortPreference = {"popular", "top_rated"};
-
-
     private URL requestURL;
 
 
@@ -42,34 +39,31 @@ public class MovieRequests{
 
     private void setRequestURL(JSONObject params) {
 
-        try{
+        try {
 
             Uri.Builder built = Uri.parse(API_BASE_URL).buildUpon();
             built.appendQueryParameter("api_key", API_KEY);
 
-            if(params.has("sort_by")){
-                built.appendPath(sortPreference[Integer.valueOf(params.getInt("sort_by"))-1]);
+            if (params.has("sort_by")) {
+                built.appendPath(sortPreference[Integer.valueOf(params.getInt("sort_by")) - 1]);
             }
-            if(params.has("movie_id")){
+            if (params.has("movie_id")) {
                 built.appendEncodedPath(params.getString("movie_id"));
                 // detail key can be "videos" or "reviews"
                 if (params.has("details"))
                     built.appendEncodedPath(params.getString("details"));
-               // built.appendQueryParameter("append_to_response", "videos,reviews");
+                // built.appendQueryParameter("append_to_response", "videos,reviews");
             }
             Uri builtUri = built.build();
 
             this.requestURL = new URL(builtUri.toString());
-            Log.d("DETAIL URL", builtUri.toString());
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-
-    public String fetch(){
+    public String fetch() {
 
         String jsonResponse = "";
 
@@ -105,31 +99,6 @@ public class MovieRequests{
 
         return jsonResponse;
 
-    }
-
-    public ArrayList<Movies> parseJsonMovie(String json){
-
-        ArrayList<Movies> list =  new ArrayList<>();
-        try{
-            JSONObject jsonMovies = new JSONObject(json);
-            JSONArray res = jsonMovies.getJSONArray("results");
-            for(int i= 0; i< res.length();i++){
-                Movies movie = new Movies();
-                JSONObject  film = res.getJSONObject(i);
-                movie.setTitle(film.optString("original_title"));
-                movie.setPoster(API_IMG_BASE_URL.concat(film.optString("poster_path")));
-                movie.setId(film.optInt("id"));
-                movie.setRating(film.getString("vote_average"));
-                movie.setStoryline(film.optString("overview"));
-                movie.setReleased_date(film.optString("release_date"));
-                list.add(movie);
-            }
-        }
-        catch(JSONException ex){
-            ex.printStackTrace();
-        }
-
-        return list;
     }
 
     public static void setApiKey() {
