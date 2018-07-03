@@ -32,6 +32,7 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
 
 
     private static final String ARG_MOVIE_ID = "movie id";
+    private static final String ARG_MOVIE_TRAILER = "trailers";
     public int movieId;
     public ArrayList<MovieTrailer> trailers;
     public TrailerAdapter adapter;
@@ -68,6 +69,9 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
         recyclerView = rootView.findViewById(R.id.rv_videos_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        if(savedInstanceState!=null)
+            trailers = savedInstanceState.getParcelableArrayList(ARG_MOVIE_TRAILER);
+
         getLoaderManager().initLoader(3, null, this).forceLoad();
         return rootView;
     }
@@ -139,5 +143,18 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
             trailerName = itemView.findViewById(R.id.tv_trailer_name);
             linearLayout = itemView.findViewById(R.id.ll_trailer);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(ARG_MOVIE_TRAILER, trailers);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null)
+            trailers = savedInstanceState.getParcelableArrayList(ARG_MOVIE_TRAILER);
     }
 }

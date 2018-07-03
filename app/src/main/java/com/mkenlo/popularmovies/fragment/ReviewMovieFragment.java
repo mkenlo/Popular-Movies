@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class ReviewMovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>{
 
     private static final String ARG_MOVIE_ID = "movie id";
+    private static final String ARG_KEY_MOVIE_REVIEW = "reviews";
     private int movieId;
     public ArrayList<MovieReview> reviews;
     public RecyclerView recyclerView;
@@ -69,6 +70,10 @@ public class ReviewMovieFragment extends Fragment implements LoaderManager.Loade
         adapter = new ReviewAdapter();
         recyclerView.setAdapter(adapter);
 
+        if(savedInstanceState!=null)
+            reviews = savedInstanceState.getParcelableArrayList(ARG_KEY_MOVIE_REVIEW);
+
+
         return rootView;
     }
 
@@ -87,18 +92,13 @@ public class ReviewMovieFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
-       // if(loader.getId() == 2){
             reviews = Objectify.getMovieReviews(data);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
-       // }
-
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<String> loader) {
-
-    }
+    public void onLoaderReset(@NonNull Loader<String> loader) {}
 
 
     public class ReviewAdapter extends RecyclerView.Adapter<ReviewVH>{
@@ -134,5 +134,19 @@ public class ReviewMovieFragment extends Fragment implements LoaderManager.Loade
             reviewAuthor =  itemView.findViewById(R.id.tv_review_author);
             reviewContent = itemView.findViewById(R.id.tv_review_content);
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(ARG_KEY_MOVIE_REVIEW, reviews);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null)
+            reviews = savedInstanceState.getParcelableArrayList(ARG_KEY_MOVIE_REVIEW);
     }
 }

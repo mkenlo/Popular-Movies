@@ -33,10 +33,11 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="e43823" />
-                            <entry key="outputName" value="ic_star_border" />
+                            <entry key="outputName" value="ic_is_favorite" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Melanie Lontsi\Downloads\rating.svg" />
+                            <entry key="sourceFile" value="C:\Users\Melanie Lontsi\Downloads\heartbis.svg" />
                           </map>
                         </option>
                       </PersistentState>

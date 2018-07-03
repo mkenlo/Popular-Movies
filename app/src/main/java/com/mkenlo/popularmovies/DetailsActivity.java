@@ -1,5 +1,8 @@
 package com.mkenlo.popularmovies;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private int totalPages = 3;
     private static final String ARG_MOVIE = "movie";
+    public FloatingActionButton mFab;
 
     Movies movie;
     MovieDB mDB;
@@ -54,7 +58,6 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         mDB = MovieDB.getInstance(this);
-
         movie = getIntent().getParcelableExtra(ARG_MOVIE);
 
         // Rename UI title with the movie Title
@@ -63,19 +66,15 @@ public class DetailsActivity extends AppCompatActivity {
         ImageView iv_movie_bg = findViewById(R.id.iv_movie_backdrop);
         Picasso.get().load(movie.getBackdropPoster()).into(iv_movie_bg);
 
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, R.string.favorite_message, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 onFavoriteFabPressed();
             }
         });
 
+        setupViewModel();
     }
 
     /**
@@ -84,7 +83,7 @@ public class DetailsActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -117,11 +116,50 @@ public class DetailsActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if(mDB.movieDao().getOneMovie(movie.getId()) == null){
+                final int fav_message ;
+                final int fav_icon;
+                Movies film = mDB.movieDao().getMovieById(movie.getId());
+                if(film == null){
                     mDB.movieDao().insert(movie);
+                    fav_message = R.string.favorite_message;
+                    fav_icon = R.drawable.ic_is_favorite;
                 }
+                else{
+                    mDB.movieDao().delete(movie);
+                    fav_message = R.string.unfavorite_message;
+                    fav_icon = R.drawable.ic_favorite;
+
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(mFab, fav_message, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        mFab.setImageResource(fav_icon);
+                    }
+                });
+
             }
         });
 
     }
+
+    public void setupViewModel(){
+        AddFavoriteViewModelFactory factory = new AddFavoriteViewModelFactory(mDB, movie.getId());
+        final AddFavoriteViewModel viewModel = ViewModelProviders.of(
+                this, factory).get(AddFavoriteViewModel.class);
+
+        viewModel.getMovie().observe(this, new Observer<Movies>() {
+            @Override
+            public void onChanged(@Nullable Movies film) {
+                viewModel.getMovie().removeObserver(this);
+                // update Fab Button Icon
+                if(film!= null)
+                    mFab.setImageResource(R.drawable.ic_is_favorite);
+                else mFab.setImageResource(R.drawable.ic_favorite);
+            }
+        });
+    }
+
 }
