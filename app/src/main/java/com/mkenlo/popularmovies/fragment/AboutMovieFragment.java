@@ -1,13 +1,11 @@
 package com.mkenlo.popularmovies.fragment;
 
 
-import android.graphics.Movie;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +15,8 @@ import android.widget.TextView;
 
 import com.mkenlo.popularmovies.R;
 import com.mkenlo.popularmovies.model.Movies;
-import com.mkenlo.popularmovies.tasks.FetchMovieTask;
-import com.mkenlo.popularmovies.utils.Objectify;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +24,7 @@ import org.json.JSONObject;
 public class AboutMovieFragment extends Fragment {
 
     private static final String ARG_MOVIE = "movie";
-    //private int movieId;
+
     private Movies movie;
     ImageView iv_movie_poster ;
     TextView tv_movie_rating;
@@ -38,7 +32,7 @@ public class AboutMovieFragment extends Fragment {
     TextView tv_movie_title ;
     TextView tv_movie_storyline;
     TextView tv_movie_genre;
-    LinearLayout linearLayout;
+    LinearLayout mLinearLayout;
 
 
     public AboutMovieFragment() {
@@ -74,8 +68,7 @@ public class AboutMovieFragment extends Fragment {
         tv_movie_title = rootView.findViewById(R.id.tv_movie_title);
         tv_movie_storyline = rootView.findViewById(R.id.tv_movie_storyline);
         tv_movie_genre = rootView.findViewById(R.id.tv_movie_genre);
-
-        linearLayout = rootView.findViewById(R.id.ll_rating);
+        mLinearLayout = rootView.findViewById(R.id.ll_rating);
 
         updateUI();
 
@@ -92,7 +85,7 @@ public class AboutMovieFragment extends Fragment {
         tv_movie_storyline.setText(movie.getStoryline());
         tv_movie_genre.setText(movie.getGenre());
 
-        linearLayout.removeAllViewsInLayout();
+        mLinearLayout.removeAllViewsInLayout();
         populateRating(Double.valueOf(movie.getRating()));
     }
 
@@ -102,20 +95,34 @@ public class AboutMovieFragment extends Fragment {
         for(int i = 0; i< n ; i++){
             ImageView imageView = new ImageView(getContext());
             imageView.setImageResource(R.drawable.ic_star_full);
-            linearLayout.addView(imageView);
+            mLinearLayout.addView(imageView);
             count++;
         }
         if((rating-n)>0){
             ImageView imageView = new ImageView(getContext());
             imageView.setImageResource(R.drawable.ic_star_half);
-            linearLayout.addView(imageView);
+            mLinearLayout.addView(imageView);
             count++;
         }
         for(int i = 0; i< (10-count) ; i++){
             ImageView imageView = new ImageView(getContext());
             imageView.setImageResource(R.drawable.ic_star_border);
-            linearLayout.addView(imageView);
+            mLinearLayout.addView(imageView);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ARG_MOVIE, movie);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if(savedInstanceState!=null) {
+            movie = savedInstanceState.getParcelable(ARG_MOVIE);
+        }
+        super.onActivityCreated(savedInstanceState);
     }
 
 

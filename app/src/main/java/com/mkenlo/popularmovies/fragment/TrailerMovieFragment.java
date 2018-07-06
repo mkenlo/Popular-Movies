@@ -4,6 +4,7 @@ package com.mkenlo.popularmovies.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,11 +33,13 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
 
 
     private static final String ARG_MOVIE_ID = "movie id";
-    private static final String ARG_MOVIE_TRAILER = "trailers";
-    public int movieId;
-    public ArrayList<MovieTrailer> trailers;
-    public TrailerAdapter adapter;
-    public RecyclerView recyclerView;
+    private static final String SAVED_LAYOUT_MANAGER = "layout-manager-state";
+    private LinearLayoutManager mLayoutManager;
+    private Parcelable mListState;
+    private int movieId;
+    private ArrayList<MovieTrailer> mTrailers;
+    private TrailerAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
     public TrailerMovieFragment() {
         // Required empty public constructor
@@ -64,13 +67,12 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_trailer_movie, container, false);
-        trailers = new ArrayList<>();
-        adapter = new TrailerAdapter();
-        recyclerView = rootView.findViewById(R.id.rv_videos_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        if(savedInstanceState!=null)
-            trailers = savedInstanceState.getParcelableArrayList(ARG_MOVIE_TRAILER);
+        mTrailers = new ArrayList<>();
+        mAdapter = new TrailerAdapter();
+        mRecyclerView = rootView.findViewById(R.id.rv_videos_list);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         getLoaderManager().initLoader(3, null, this).forceLoad();
         return rootView;
@@ -82,7 +84,6 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
         try {
             JSONObject params = new JSONObject(String.format("{'movie_id':%s, 'details':%s}", movieId, "videos"));
             return new FetchMovieTask(getActivity(), params);
-
         }catch(JSONException ex){
             ex.printStackTrace();
         }
@@ -92,9 +93,8 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
 
-        trailers = Objectify.getMovieTrailer(data);
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
+        mTrailers = Objectify.getMovieTrailer(data);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -112,7 +112,7 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void onBindViewHolder(@NonNull TrailerVH holder, int position) {
-            final MovieTrailer video = trailers.get(position);
+            final MovieTrailer video = mTrailers.get(position);
             holder.trailerName.setText(video.getName());
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -130,7 +130,7 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public int getItemCount() {
-            return trailers.size();
+            return mTrailers.size();
         }
     }
 
@@ -148,13 +148,22 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(ARG_MOVIE_TRAILER, trailers);
+        outState.putParcelable(SAVED_LAYOUT_MANAGER, mLayoutManager.onSaveInstanceState());
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if(savedInstanceState!=null) {
+            mListState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState!=null)
-            trailers = savedInstanceState.getParcelableArrayList(ARG_MOVIE_TRAILER);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
     }
 }
