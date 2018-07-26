@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         movies = Objectify.getMovies(data);
         mAdapter.setMovies(movies);
         mRecyclerView.setAdapter(mAdapter);
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
         updateUIHeadline(mSortPreference);
     }
 

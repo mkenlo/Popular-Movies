@@ -95,6 +95,9 @@ public class TrailerMovieFragment extends Fragment implements LoaderManager.Load
 
         mTrailers = Objectify.getMovieTrailer(data);
         mAdapter.notifyDataSetChanged();
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
     }
 
     @Override

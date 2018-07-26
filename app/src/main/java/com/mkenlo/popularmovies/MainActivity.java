@@ -24,6 +24,7 @@ import com.mkenlo.popularmovies.fragment.SearchFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_SAVE_FRAGMENT = "fragment_item";
+    private static String FRAGMENT_TAG = "home";
     BottomNavigationView mNavigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment frag = selectFragment(item.getItemId());
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_fragment_container, frag);
+            fragmentTransaction.replace(R.id.frame_fragment_container,  frag, FRAGMENT_TAG);
             fragmentTransaction.commit();
             return true;
         }
@@ -58,14 +59,14 @@ public class MainActivity extends AppCompatActivity {
             FrameLayout fl = findViewById(R.id.frame_error_container);
             fl.setVisibility(View.GONE);
         }
-        Fragment frag = null;
+        Fragment frag;
         if(savedInstanceState!=null){
             frag = selectFragment(savedInstanceState.getInt(KEY_SAVE_FRAGMENT));
         }else{
          frag = HomeFragment.newInstance();
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_fragment_container, frag);
+        fragmentTransaction.replace(R.id.frame_fragment_container, frag, FRAGMENT_TAG);
         fragmentTransaction.commit();
 
     }
@@ -73,15 +74,26 @@ public class MainActivity extends AppCompatActivity {
     private Fragment selectFragment(int itemId) {
 
         Fragment frag = null;
+        Fragment restoreFrag = null;
         switch (itemId) {
             case R.id.navigation_home:
+
                 frag = new HomeFragment();
+                FRAGMENT_TAG = "home";
+                restoreFrag = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+                if(restoreFrag!=null) frag = restoreFrag;
                 break;
             case R.id.navigation_favorite:
                 frag = new FavoriteFragment();
+                FRAGMENT_TAG = "favorites";
+                restoreFrag = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+                if(restoreFrag!=null) frag = restoreFrag;
                 break;
             case R.id.navigation_search:
                 frag = new SearchFragment();
+                FRAGMENT_TAG = "search";
+                restoreFrag = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+                if(restoreFrag!=null) frag = restoreFrag;
         }
         return frag;
     }
